@@ -37,26 +37,22 @@ def other(request, htmlname):
 
 # 登录
 def login(request):
-    if request.method == "POST":
+    if request.is_ajax():
         response = {"user": None, "msg": None, "code": None}
         user = request.POST.get("user")
         pwd = request.POST.get("pwd")
-        valid_code = request.POST.get("valid_code")
-        valid_code_str = request.session.get("valid_code_str")
 
         # 检验验证码
-        if valid_code.upper() == valid_code_str.upper():
-            user = auth.authenticate(username=user, password=pwd)
-            if user:
-                auth.login(request, user)  # request.user==当前登录对象
-                response['user'] = user.username
-                response['code'] = 1
-            else:
-                response['msg'] = "用户名密码错误!"
-                response['code'] = -1
+
+        user = auth.authenticate(username=user, password=pwd)
+        if user:
+            auth.login(request, user)  # request.user==当前登录对象
+            response['user'] = user.username
+            response['code'] = 1
         else:
-            response["msg"] = "验证码错误"
-            response['code'] = 0
+            response['msg'] = "用户名密码错误!"
+            response['code'] = -1
+
         return JsonResponse(response)
 
     return render(request, 'login_out/index.html')
@@ -81,38 +77,26 @@ def get_ValidCode_img(request):
 # 注册
 def register(request):
     if request.is_ajax():
+        print(request.POST)
+        response = {"user": None, "msg": "cuowu", "code": None}
+        username = request.POST.get("user")
 
-        form = UserForm(request.POST)
+        pwd = request.POST.get("pwd")
+        re_pwd = request.POST.get("re_pwd")
 
-        # print(request.POST)
-        response = {"user": None, "msg": None}
-        if form.is_valid():
-            print(form.cleaned_data)
-            response['user'] = form.cleaned_data.get("user")
+        user = UserInfo.objects.filter(username=username).values()
 
-            # 生成一条用户记录
+        if not user:
 
-            user = form.cleaned_data.get("user")
-            print("user:", user)
-            pwd = form.cleaned_data.get("pwd")
-            email = form.cleaned_data.get("email")
-            avatar_obj = request.FILES.get("avatar")
+            response['user'] = username
 
-            if avatar_obj:
-                import os
-                print(settings.BASE_DIR)
-                path = os.path.join(settings.BASE_DIR, 'media', "avatars", avatar_obj.__str__())
-
-                user_obj = UserInfo.objects.create_user(username=user, password=pwd, email=email, avatar=avatar_obj)
-                cat_img(path)
-
-            else:
-                user_obj = UserInfo.objects.create_user(username=user, password=pwd, email=email)
+            # user_obj = UserInfo.objects.create_user(username=username, password=pwd, )
 
         else:
+            print(user)
             # print(form.cleaned_data)
             # print(form.errors)
-            response['msg'] = form.errors
+            response['msg'] = "账户已经存在"
         return JsonResponse(response)
 
     form = UserForm()
@@ -256,8 +240,6 @@ def query_month_list(request):
             year_month = Article.objects.filter().annotate(month=TruncMonth("create_time")).values(
                 "month").annotate(
                 c=Count('nid')).values("month", 'c')
-
-
 
         t = get_template("Tale/year_month.html")
         content_html = t.render({'year_month': year_month, })
