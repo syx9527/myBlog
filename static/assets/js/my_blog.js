@@ -1,5 +1,3 @@
-var username = $("#user_name").text();
-
 // 获取文章列表
 $(document).ready(function () {
 
@@ -7,7 +5,7 @@ $(document).ready(function () {
         url: "/query_article_list/",
         type: "post",
 
-        username: "{{ user.username }}",
+        username: username,
         data: {
             name: 'all',
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
@@ -15,8 +13,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#article_list').html(data.content_html);
+            if (data.code = 1) {
+                $('#article_list').html(data.content_html);
+            }
 
         }
     });
@@ -25,7 +24,7 @@ $(document).ready(function () {
         url: "/query_tag_list/",
         type: "post",
 
-        username: "{{ user.username }}",
+        username: username,
         data: {
             name: 'all',
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
@@ -33,8 +32,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#tag_list').html(data.content_html);
+            if (data.code = 1) {
+                $('#tag_list').html(data.content_html);
+            }
 
         }
     });
@@ -43,7 +43,6 @@ $(document).ready(function () {
         url: "/query_cate_list/",
         type: "post",
 
-        username: "{{ user.username }}",
         data: {
             name: 'all',
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
@@ -52,8 +51,9 @@ $(document).ready(function () {
 
         success: function (data) {
 
-            $('#cate_list').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#cate_list').html(data.content_html);
+            }
         }
     });
 
@@ -62,7 +62,7 @@ $(document).ready(function () {
         url: "/query_month_list/",
         type: "post",
 
-        username: "{{ user.username }}",
+
         data: {
             name: 'all',
             csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
@@ -70,9 +70,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#year_month').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#year_month').html(data.content_html);
+            }
         }
     });
 
@@ -88,7 +88,7 @@ $(document).on("click", ".author_btn", function () {
         url: "/query_article_list/",
         type: "post",
 
-        username: "{{ user.username }}",
+
         data: {
             id: id,
             name: name,
@@ -97,11 +97,9 @@ $(document).on("click", ".author_btn", function () {
         },
 
         success: function (data) {
-
-            $('#article_list').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#article_list').html(data.content_html);
+            }
         }
     })
 });
-
-

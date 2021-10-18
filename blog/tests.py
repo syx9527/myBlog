@@ -1,12 +1,9 @@
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
-from django.test import TestCase
 from .models import *
-from django.contrib import auth
+
 # Create your tests here.
 
-user = UserInfo.objects.filter(username='syx', )
+user = UserInfo.objects.filter(username='syx').first()
 if user:
-    print(1)
+    print(user.blog.site_name)
 else:
     print(2)

@@ -1,0 +1,75 @@
+{% extends "Tale/base.html" %}
+{% load static %}
+
+{% block body %}
+    <link href="/static/admin/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css"/>
+    <!-- Icons Css -->
+    <link href="/static/admin/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <!-- App Css-->
+    <link href="/static/admin/css/app.min.css" id="app-style" rel="stylesheet" type="text/css"/>
+
+
+    <!-- end row -->
+
+    <div class="row">
+        <div class="col-xl-3"></div>
+        <div class="col-xl-6">
+
+            <div class="card-body">
+                <h4 class="card-title">设置个人信息</h4>
+                <p class="card-title-desc">您需要进行初始化才能继续使用个人博客！</p>
+
+                <form class="custom-validation" action="#" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label>个人博客标题</label>
+                        <input type="text" class="form-control" id="blog_title" data-parsley-maxlength="32" required
+                               placeholder="请输入您的个人博客标题"/>
+                    </div>
+                    <div class="mb-3">
+                        <label>博客站点</label>
+                        <input type="text" class="form-control" id="blog_site_name" data-parsley-maxlength="32"
+                               data-parsley-length="[1,12]"
+                               data-parsley-type="alphanum" required
+                               placeholder="请输入您的个人博客站点"/>
+                    </div>
+
+
+                    <!--头像-->
+                    <div class="form-group">
+                        <br>
+                        <label for="avatar">
+                            头像
+                            <img id="avatar_img" width="40" height="40" src="/static/img/default.png" alt="">
+                        </label>
+
+                        <input type="file" id="avatar" accept="image/*" style="display: none">
+                        {# <input type="file" id="avatar" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"> #}
+                    </div>
+
+                    <div class="mb-0">
+                        <div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light me-1" id="submit">
+                                提交
+                            </button>
+                            <button type="reset" class="btn btn-secondary waves-effect">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div> <!-- end col -->
+        <div class="col-xl-3"></div>
+
+    </div> <!-- end row -->
+{% endblock %}
+
+{% block js %}
+    <script src="/static/admin/libs/parsleyjs/parsley.min.js"></script>
+
+    <script src="/static/admin/js/pages/form-validation.init.js"></script>
+
+{% endblock %}

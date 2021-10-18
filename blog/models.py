@@ -1,6 +1,5 @@
-from django.db import models
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 # Create your models here.
@@ -75,15 +74,16 @@ class Article(models.Model):
     desc = models.CharField(max_length=255, verbose_name='文章描述')
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
 
-    comment_count = models.IntegerField(default=0)
-    up_count = models.IntegerField(default=0)
-    down_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0, verbose_name="评论数")
+    up_count = models.IntegerField(default=0, verbose_name="点赞数")
+    down_count = models.IntegerField(default=0, verbose_name="点踩数")
 
     # 文章表下的用户删除之后，原来的用户信息也会删除，因为文章表必须要有作者
     user = models.ForeignKey(verbose_name='作者', to='UserInfo', to_field='nid', on_delete=models.CASCADE,
                              related_name='Article_user', db_column='user')
     # 文章下对分类的删除也会对分类主表进行删除
-    category = models.ForeignKey(verbose_name="文章分类",to='Category', to_field='nid', null=True, on_delete=models.CASCADE,
+    category = models.ForeignKey(verbose_name="文章分类", to='Category', to_field='nid', null=True,
+                                 on_delete=models.CASCADE,
                                  related_name='Article_category', db_column='category')
     tags = models.ManyToManyField(
 
@@ -126,8 +126,8 @@ class ArticleUpDown(models.Model):
         如果点赞被删除，那么用户表和文件表不会被删除
     """
     nid = models.AutoField(primary_key=True)
-    user = models.ForeignKey(to='UserInfo', null=True, on_delete=models.PROTECT)
-    article = models.ForeignKey("Article", null=True, on_delete=models.PROTECT)
+    user = models.ForeignKey(to='UserInfo', null=False, on_delete=models.PROTECT, default=None)
+    article = models.ForeignKey(to="Article", null=False, on_delete=models.PROTECT, default=None)
     is_up = models.BooleanField(default=True)
 
     class Meta:
@@ -146,9 +146,7 @@ class Comment(models.Model):
     # body = RichTextField()
     content = models.CharField(verbose_name='评论内容', max_length=255)
     # self == Comment: 数据库语法自关联
-    parent_comment = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, verbose_name='评论对象', )
 
     def __str__(self):
         return self.content
-
-
