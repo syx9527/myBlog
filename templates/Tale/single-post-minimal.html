@@ -4,10 +4,26 @@
     <style>
         .social-icons-share li {
             float: left;
-            padding: 15px;
+            padding: 10px;
             list-style: none;
         }
+
     </style>
+    <style>
+        .answerTextArea {
+            width: 100%;
+            height: auto;
+            border: none;
+            outline: none;
+            font-size: 0.6rem;
+            color: red;
+            background: none;
+            box-sizing: border-box;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #fff;
+        }
+    </style>
+
 {% endblock %}
 {% block body %}
 
@@ -26,97 +42,112 @@
             </div>
         </div>
     </div>
-    <section class="section section-semi-white text-left">
-        <div class="container-fluid">
+    <div class="container-fluid">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="single-post-content">
+
+            <!--博客标题正文部分,后期需要用markdown形式替换-->
             <div class="col-md-8 col-md-offset-2">
-                <div class="single-post-content">
+                {{ article.content|safe }}
+            </div>
 
-                    <!--博客标题正文部分,后期需要用markdown形式替换-->
-                    <div class="col-md-8 col-md-offset-2">
-                        {{ article.content|safe }}
+            <div class="col-md-8 col-md-offset-2 ">
+                <hr/>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!--文章底部显示标签，分类，日期-->
+                        <div class="hashtags"><a href="#!">{{ tags }}</a><a href="#!">{{ category }}</a><a
+                                href="#!">{{ month }}</a></div>
                     </div>
+                </div>
 
-                    <div class="col-md-8 col-md-offset-2 ">
-                        <hr/>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-4 "></div>
+                <div class="col-md-8 ">
+                    <div class="row text-right " id="dig">
+
+                        <ul class="social-icons-share">
+                            {% csrf_token %}
+                            <li><a href="#!" id="dig_up"><i
+                                    class="icon ion-heart dignum">{{ article.up_count }}</i></a></li>
+                            <li><a href="#!" id="dig_down"><i
+                                    class="icon ion-heart-broken dignum">{{ article.down_count }}</i></a></li>
+
+                            <li><a href="#!" id="dig_comment"><i
+                                    class="ion ion-ios-compose-outline">{{ article.comment_count }}</i></a></li>
+                        </ul>
+
                     </div>
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <!--文章底部显示标签，分类，日期-->
-                                <div class="hashtags"><a href="#!">{{ tags }}</a><a href="#!">{{ category }}</a><a
-                                        href="#!">{{ month }}</a></div>
-                            </div>
+                    <div id="dig_tips" class="text-right">
+
+                        <p style="opacity: 0;color: red">这里是操作信息</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 col-md-offset-2 comments-divider">
+                <hr/>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-12 margin-top">
+                    <div class="row">
+                        <h2>3 Comments</h2>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <!--评论内容-->
+                        <div id="comment_list">
+
                         </div>
 
-                    </div>
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="col-md-8 "></div>
-                        <div class="col-md-4 ">
-                            <div class="row text-right " id="dig">
+                        <!--评论框-->
+                        <div class="media blog-comment margin-top">
+                            {% if request.user.username %}
+                                <div class="media-left pull-left"><a href="/{{ request.user.blog.site_name }}/"><img
+                                        src="/media/{{ request.user.avatar }}" alt="Comment author" width="50"
+                                        class="img-circle"/></a></div>
+                                <div class="media-body">
+                                <p class="media-heading blog-comment-title"><a
+                                        href="/{{ request.user.blog.site_name }}/">{{ request.user.username }}</a>
+                                </p>
 
-                                    <ul class="social-icons-share">
-                                        {% csrf_token %}
-                                    <li><a href="#!" id="dig_up"><i
-                                            class="icon ion-heart dignum">{{ article.up_count }}</i></a></li>
-                                    <li><a href="#!" id="dig_down"><i
-                                            class="icon ion-heart-broken dignum">{{ article.down_count }}</i></a></li>
+                            {% else %}
 
-                                    <li><a href="#!" id="dig_comment"><i
-                                            class="ion ion-ios-compose-outline">{{ article.comment_count }}</i></a></li>
-                                </ul>
+                                <div class="media-left pull-left"><a href="/login/"><img
+                                        src="/media/avatars/default.png" alt="Comment author" width="50"
+                                        class="img-circle"/></a></div>
+                                <div class="media-body">
+                                <p class="media-heading blog-comment-title"><a href="/login/">您还没有登录，点击此处登录</a>
+                                </p>
 
+                            {% endif %}
+
+                            <p class="blog-comment-paragraph margin-top">
+
+
+                            <form role="form">
+                                <div class="form-group">
+
+                                            <textarea id="comment_content" class="form-control" rows="5"
+                                                      placeholder="在此输入评论"></textarea>
+
+                                </div>
+                            </form>
+
+                            </p>
+                            <a id="comment_btn" href="#!" class="btn btn-primary ">提交</a>
                             </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-8 col-md-offset-2 comments-divider">
-                        <hr/>
-                    </div>
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="col-md-12 margin-top">
-                            <div class="row">
-                                <h2>3 Comments</h2>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="media blog-comment margin-top">
-                                    <div class="media-left pull-left"><a href="#!"><img
-                                            src="/static/assets/images/avatar-1.jpg" alt="Comment author" width="50"
-                                            class="img-circle"/></a></div>
-                                    <div class="media-body"><span class="media-heading blog-comment-title"><a href="#!">David Jones</a></span>
-                                        <div class="blog-comment-date">12 / 5 / 2016</div>
-                                        <span class="blog-comment-paragraph margin-top">Beast created from seasons creepeth given. Life from you're so multiply form be set rule saying gathering years Abundantly have was together they're without lights form. Waters give yielding without second let creature waters. Our whales forth days there. Which seasons. Firmament. Us his created divide moveth, every you'll. Gathered.</span><a
-                                                href="#!" class="btn btn-link">Reply</a>
-                                    </div>
-                                </div>
-                                <div class="media blog-comment nested margin-top">
-                                    <div class="media-left pull-left"><a href="#!"><img
-                                            src="/static/assets/images/avatar-3.jpg" alt="Comment author" width="50"
-                                            class="img-circle"/></a></div>
-                                    <div class="media-body"><span class="media-heading blog-comment-title"><a href="#!">Celin' Coreo</a></span>
-                                        <div class="blog-comment-date">13 / 5 / 2016</div>
-                                        <span class="blog-comment-paragraph margin-top">Beast created from seasons creepeth given. Life from you're so multiply form be set rule saying gathering years Abundantly have was together they're without lights form. Waters give yielding without second let creature waters. Our whales forth days there. Which seasons. Firmament. Us his created divide moveth, every you'll. Gathered.</span><a
-                                                href="#!" class="btn btn-link">Reply</a>
-                                    </div>
-                                </div>
-                                <div class="media blog-comment margin-top">
-                                    <div class="media-left pull-left"><a href="#!"><img
-                                            src="/static/assets/images/avatar-4.jpg" alt="Comment author" width="50"
-                                            class="img-circle"/></a></div>
-                                    <div class="media-body"><span class="media-heading blog-comment-title"><a href="#!">Tomas Heitz</a></span>
-                                        <div class="blog-comment-date">22 / 5 / 2016</div>
-                                        <span class="blog-comment-paragraph margin-top">Beast created from seasons creepeth given. Life from you're so multiply form be set rule saying gathering years Abundantly have was together they're without lights form. Waters give yielding without second let creature waters. Our whales forth days there. Which seasons. Firmament. Us his created divide moveth, every you'll. Gathered.</span><a
-                                                href="#!" class="btn btn-link">Reply</a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     <section class="section section-white text-left">
         <div class="container-fluid">
             <div class="col-md-10 col-md-offset-1">
@@ -202,4 +233,6 @@
 
     </script>
     <script src="{% static "assets/js/favorite.js" %}"></script>
+    <script src="{% static "assets/js/comments.js" %}"></script>
+
 {% endblock %}

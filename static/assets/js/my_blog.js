@@ -1,4 +1,4 @@
-// 获取文章列表
+// 获取文章列表,网页加载完成后即运行
 $(document).ready(function () {
 
     $.ajax({

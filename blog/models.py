@@ -144,7 +144,7 @@ class Comment(models.Model):
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     # 富文本编辑器 ckeditor
     # body = RichTextField()
-    content = models.CharField(verbose_name='评论内容', max_length=255)
+    content = models.TextField(verbose_name='评论内容')
     # self == Comment: 数据库语法自关联
     parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, verbose_name='评论对象', )
 

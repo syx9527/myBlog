@@ -38,6 +38,7 @@ def other(request, htmlname):
 # 登录
 def login(request):
     """登录"""
+
     if request.is_ajax():
         response = {"user": None, "msg": None, "code": None}
         user = request.POST.get("user")
@@ -50,6 +51,7 @@ def login(request):
             auth.login(request, user)  # request.user==当前登录对象
             response['user'] = user.username
             response['code'] = 1
+
         else:
             response['msg'] = "用户名密码错误!"
             response['code'] = -1
@@ -63,7 +65,9 @@ def login(request):
 
 def logout(request):
     auth.logout(request)  # request.session.flush()
-
+    referer_url = request.headers.get("Referer")
+    if referer_url:
+        return HttpResponseRedirect(referer_url)
     return HttpResponseRedirect("/")
 
 
@@ -293,7 +297,6 @@ def article(request, article_id):
 
 
 # 处理点赞功能
-# 获取标签列表
 def dig(request):
     """
     处理点赞功能
@@ -301,26 +304,63 @@ def dig(request):
     :return:
     """
     if request.is_ajax():
-        response = {"state": True, }
+        response = {"state": True, "msg": None}
         # id = request.POST.get("id")
         # is_up = request.POST.get("is_up")  # "true"/"false"
         is_up = json.loads(request.POST.get("is_up"))
         article_id = request.POST.get("article_id")
         user_id = request.user.pk
-        obj = ArticleUpDown.objects.filter(user_id=user_id, article_id=article_id).first()
-        if not obj:
-            ard = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id, is_up=is_up)
-            queryset = Article.objects.filter(pk=article_id)
-            if is_up:
+        if user_id:
+            obj = ArticleUpDown.objects.filter(user_id=user_id, article_id=article_id).first()
+            if not obj:
+                ard = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id, is_up=is_up)
+                queryset = Article.objects.filter(pk=article_id)
+                if is_up:
 
-                queryset.update(up_count=F("up_count") + 1)
+                    queryset.update(up_count=F("up_count") + 1)
+                else:
+                    queryset.update(down_count=F("down_count") + 1)
             else:
-                queryset.update(down_count=F("down_count") + 1)
+                response['state'] = False
+                response['handed'] = obj.is_up
         else:
             response['state'] = False
-            response['handled'] = obj.is_up
+            response['msg'] = "您尚未登录，请先<a href='/login/'>登录</a>"
 
         return JsonResponse(response)
+
+
+def query_comment_list(request):
+    """
+    获取评论
+    :param request:
+    :return:
+    """
+    if request.is_ajax():
+        article_id = request.POST.get("article_id")
+        comment_list = Comment.objects.filter(article_id=article_id)
+        t = get_template("Tale/comment.html")
+        content_html = t.render({'comment_list': comment_list, "article_id": article_id})
+
+        response = {"content_html": content_html, "code": 1}
+        return JsonResponse(response)
+
+
+def comment(request):
+    """
+    提交评论
+    :param request:
+    :return:
+    """
+    print(request.POST)
+    if request.is_ajax():
+        article_id = request.POST.get("article_id")
+        content = request.POST.get("content")
+        pid = request.POST.get("pid")
+        user_id = request.user.pk
+        comment_obj = Comment.objects.create(user_id=user_id, article_id=article_id, content=content,
+                                             parent_comment_id=pid)
+    return JsonResponse({"comment": "ok"})
 
 
 # 用户初始化设置

@@ -3,6 +3,7 @@ $(document).on("click", "#dig .dignum", function () {
 
     var is_up = $(this).hasClass("ion-heart")
 
+    $obj = $(this)
 
     // var id = this.id;
     // var name = this.getAttribute("name");
@@ -24,22 +25,33 @@ $(document).on("click", "#dig .dignum", function () {
 
 
             if (data.state) {
-                console.log(data);
+
+                var val = parseInt($obj.text());
+
+                $obj.text(val + 1)
+
             } else {
-
-                if (data.handled) {
-
-
+                if (data.msg) {
+                    $("#dig_tips p").html(data.msg).css({"opacity": "1",})
                 } else {
+                    if (data.handed) {
+                        $("#dig_tips p").html("您已经点赞过").css({"opacity": "1",})
 
+                    } else {
+                        $("#dig_tips p").html("您已经点踩过").css({"opacity": "1",})
 
+                    }
+                    setTimeout(function () {
+                        $("#dig_tips p").html('这里是操作信息').css({"opacity": '0',})
+                    }, 2000)
                 }
+                setTimeout(function () {
+                    $("#dig_tips p").html('这里是操作信息').css({"opacity": '0',})
+                }, 10000)
+
 
             }
-            console.log("error");
-
 
         }
     })
-})
-;
+});

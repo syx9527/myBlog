@@ -13,8 +13,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#article_list').html(data.content_html);
+            if (data.code = 1) {
+                $('#article_list').html(data.content_html);
+            }
 
         }
     });
@@ -31,8 +32,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#tag_list').html(data.content_html);
+            if (data.code = 1) {
+                $('#tag_list').html(data.content_html);
+            }
 
         }
     });
@@ -49,8 +51,9 @@ $(document).ready(function () {
 
         success: function (data) {
 
-            $('#cate_list').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#cate_list').html(data.content_html);
+            }
         }
     });
 
@@ -67,9 +70,9 @@ $(document).ready(function () {
         },
 
         success: function (data) {
-
-            $('#year_month').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#year_month').html(data.content_html);
+            }
         }
     });
 
@@ -94,9 +97,9 @@ $(document).on("click", ".author_btn", function () {
         },
 
         success: function (data) {
-
-            $('#article_list').html(data.content_html);
-
+            if (data.code = 1) {
+                $('#article_list').html(data.content_html);
+            }
         }
     })
 });

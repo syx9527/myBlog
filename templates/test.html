@@ -1,58 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-<!-- 点击按钮，传递显示数据 -->
-<button id="btn">btn</button>
-<!-- 显示的时间弹窗的div -->
-{#<div id="date"></div>#}
-</body>
-<script>
+<textarea rows="1" class="answerTextArea" maxlength="60">sadsad</textarea>
 
-    // 创建一个div
-    var layer = document.createElement("div");
-    // 设置div的id值
-    layer.id = "layer";
+<script type="text/javascript">
 
-    // 上面按钮点击事件
+    function get_text_rows(text) {
 
-    $(document).on("click", "#btn", function () {
-        alert("555")
+        return text.split("\n").length;
 
-        /* 创建div的样式，宽200px,高80px，下面的是css样式居中，
-         * css样式居中具体了解链接：https://blog.csdn.net/A_Bear/article/details/80546181
-         */
-        var style = {
-            background: "#f00",
-            position: "absolute",
-            zIndex: 10,
-            width: "200px",
-            height: "80px",
-            left: "50%",
-            top: "50%",
-            marginLeft: "-100px",
-            marginTop: "-40px"
-        }
-        for (var i in style)
-            layer.style[i] = style[i];
-
-        // 当找不到id为layer的控件时
-        if (document.getElementById("layer") == null) {
-            // 在body中添加layer控件（layer在上面创建的）
-            document.body.appendChild(layer);
-            // 设置显示类容
-            layer.innerHTML = date;
-            // 将div中文本居中
-            layer.style.textAlign = "center";
-            layer.style.lineHeight = "80px"; // 作用是调节字体行高与div同高，使其保持水平居中
-            // 设置3s后去掉弹出窗
-            setTimeout("document.body.removeChild(layer)", 3000)
-        }
     }
 
+    $(document).ready(function () {
+
+        document.getElementById('ctl00_jiSubCon_txtJobDescribe').rows = get_text_rows($('#ctl00_jiSubCon_txtJobDescribe').val());
+
+        document.getElementById('ctl00_jiSubCon_txtJobNeed').rows = get_text_rows($('#ctl00_jiSubCon_txtJobNeed').val());
+
+        document.getElementById('ctl00_jiSubCon_txtContactMode').rows = get_text_rows($('#ctl00_jiSubCon_txtContactMode').val());
+
+    });
 
 </script>
-</html>
+
+<script>
+
+    var textarea = document.getElementById('ctl00_jiSubCon_txtJobDescribe');
+
+    textarea.style.height = textarea.scrollHeight + 'px';
+
+    var textarea2 = document.getElementById('ctl00_jiSubCon_txtJobNeed');
+
+    textarea2.style.height = textarea2.scrollHeight + 'px';
+
+    var textarea3 = document.getElementById('ctl00_jiSubCon_txtContactMode');
+
+    textarea3.style.height = textarea3.scrollHeight + 'px';
+
+</script>

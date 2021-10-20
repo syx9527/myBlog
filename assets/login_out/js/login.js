@@ -11,9 +11,13 @@ $(".login_btn").click(function () {
 
         },
         success: function (data) {
-
+            console.log(document.referrer)
             if (data.user) {
-                location.href = "/"
+                if (document.referrer) {
+                    location.href = document.referrer
+                } else {
+                    location.href = "/"
+                }
 
             } else {
                 // 显示提示信息

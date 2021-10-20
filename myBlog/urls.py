@@ -25,12 +25,15 @@ urlpatterns = [
     path('logout/', logout),
     path('register/', register),
 
-
     path('query_article_list/', query_article_list, name="article"),
     path('query_tag_list/', query_tag_list, name="tag"),
     path('query_cate_list/', query_cate_list, name="cate"),
     path('query_month_list/', query_month_list, name="month"),
-    path('dig/', dig, name="dig"),  # 处理点赞
+    path('query_comment_list/', query_comment_list, name="comment"),
+    # 处理点赞
+    path('dig/', dig, name="dig"),
+    # 处理评论
+    path('comment/', comment, name="comment_sm"),
 
     path("default_settings/", default_settings, name="default_settings"),
     re_path("^article/(?P<article_id>\d+)\.html/$", article, name="article"),
