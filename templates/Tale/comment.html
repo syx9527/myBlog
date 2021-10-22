@@ -1,0 +1,40 @@
+{% for comment in comment_list %}
+    <div class="media blog-comment margin-top">
+        <div class="media-left pull-left"><a href="{% if  comment.user.blog.site_name %}
+                /{{ comment.user.blog.site_name }}/
+                {% else %}
+                #!
+                {% endif %}"><img
+                src="/media/{{ comment.user.avatar }}" alt="Comment author" width="50"
+                class="img-circle"/></a></div>
+        <div class="media-body"><span class="media-heading blog-comment-title"><a
+                href="{% if  comment.user.blog.site_name %}
+                /{{ comment.user.blog.site_name }}/
+                {% else %}
+                #!
+                {% endif %} ">{{ comment.user.username }}
+            {% if comment.user == comment.article.user %}
+                <span class="text-primary">&nbsp;&nbsp;&nbsp;[博主]</span>
+            {% endif %}
+        </a></span>
+            <div class="blog-comment-date">{{ comment.create_time }}</div>
+            <span class="blog-comment-paragraph margin-top">{{ comment.content }}</span><a
+                    href="#!" class="btn pull-right btn-pink-">回复</a>
+        </div>
+    </div>
+
+    <!--子评论，暂时没想好怎么解决-->
+    <!--
+        <div class="media blog-comment nested margin-top">
+        <div class="media-left pull-left"><a href="#!"><img
+                src="/static/assets/images/avatar-3.jpg" alt="Comment author" width="50"
+                class="img-circle"/></a></div>
+        <div class="media-body"><span class="media-heading blog-comment-title"><a href="#!">Celin' Coreo</a></span>
+            <div class="blog-comment-date">13 / 5 / 2016</div>
+            <span class="blog-comment-paragraph margin-top">这里是子评论</span><a
+                    href="#!" class="btn btn-link">Reply</a>
+        </div>
+    </div>
+    -->
+
+{% endfor %}
