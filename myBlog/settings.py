@@ -75,16 +75,26 @@ WSGI_APPLICATION = 'myBlog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'my_blog',
+#         "HOST": "127.0.0.1",
+#         "USER": "root",
+#         "PASSWORD": "123456",
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'my_blog',
-        "HOST": "127.0.0.1",
+        "HOST": "server.natappfree.cc",
         "USER": "root",
         "PASSWORD": "123456",
+        "PORT": "33523"
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
