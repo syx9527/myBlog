@@ -19,6 +19,9 @@ class UserInfo(AbstractUser):
     def __str__(self):
         return self.username
 
+    class Meta:
+        verbose_name = verbose_name_plural = "用户信息"
+
 
 class Blog(models.Model):
     """
@@ -37,6 +40,9 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = verbose_name_plural = "博客信息"
+
 
 class Category(models.Model):
     """博主个人文章分类表"""
@@ -49,8 +55,14 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = verbose_name_plural = "用户信息"
+
 
 class Tag(models.Model):
+    """
+    标签
+    """
     nid = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='标签名称', max_length=32)
     # on_delete=models.PROTECT 标签被删除，外键关联的blog不能被删除
@@ -62,6 +74,9 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = verbose_name_plural = "标签"
 
 
 class Article(models.Model):
@@ -96,6 +111,9 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = verbose_name_plural = "文章表"
+
 
 class Article2Tag(models.Model):
     """
@@ -114,6 +132,8 @@ class Article2Tag(models.Model):
         unique_together = [
             ('article', 'tag'),
         ]
+
+        verbose_name = verbose_name_plural = "文章表与标签表的中间表"
 
     def __str__(self):
         v = self.article.title + "---" + self.tag.title
@@ -135,6 +155,8 @@ class ArticleUpDown(models.Model):
             ('article', 'user')
         ]
 
+        verbose_name = verbose_name_plural = "点赞表"
+
 
 class Comment(models.Model):
     """评论表"""
@@ -150,3 +172,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+    class Meta:
+        verbose_name = verbose_name_plural = "评论表"

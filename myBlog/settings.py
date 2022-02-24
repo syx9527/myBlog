@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)7)%q=peez^qo+l$48@_5g8o18(()a3gjnkk!&30&vpgh24*%5
 # DEBUG = False
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['bhyn.nat300.top', '127.0.0.1', ]
 
 # Application definition
 
@@ -145,3 +145,10 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ALL_USER = "sadsadasdasdasdadasd"
+
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = False
+
+SIMPLEUI_CONFIG = {
+    # 'system_keep':False,
+    'dynamic': True, }
